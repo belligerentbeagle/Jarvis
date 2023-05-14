@@ -1,20 +1,20 @@
 import speech_recognition as sr
 import openai
-
+import config
 from elevenlabslib import *
 
-openai.api_key = 'YOUR KEY HERE'
+openai.api_key = config.openAPIkey
 
-elevenLabsAPIKey = 'YOUR KEY HERE'
+elevenLabsAPIKey = config.elevenAPIkey
 
 r = sr.Recognizer()
 mic = sr.Microphone()
 user = ElevenLabsUser(elevenLabsAPIKey)
 
-voice = user.get_voices_by_name("Jarvis")[0]
+voice = user.get_voices_by_name("May May")[0]
 
 conversation = [
-        {"role": "system", "content": "Your name is Jarvis and your purpose is to be Adam's AI assistant"},
+        {"role": "system", "content": "Your name is May May and your purpose is to be Ethan's AI assistant"},
     ]
 
 
@@ -27,6 +27,7 @@ while True:
     word = r.recognize_google(audio)
 
     if "draw" in word:
+
         i = word.find("draw")
         i += 5
         response = openai.Image.create(
@@ -42,7 +43,7 @@ while True:
         conversation.append({"role": "user", "content": word})
 
         response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-3.5-turbo-0301",
         messages=conversation
         )
 
